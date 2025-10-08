@@ -1,4 +1,3 @@
-
 int elements = 15;
 
 void setup(){
@@ -10,6 +9,8 @@ void setup(){
   strokeWeight(2);
   
   println("Setup");
+  
+  createGraph();
 }
 
 void draw(){
@@ -17,6 +18,10 @@ void draw(){
 }
 
 void mouseReleased(){
+  createGraph();
+}
+
+void createGraph(){
   background(120);
   
   int largeur = width/elements;
