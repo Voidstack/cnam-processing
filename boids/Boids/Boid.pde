@@ -1,17 +1,37 @@
 // The Boid class
 
+static HashMap<String, PShape> svgCache = null;  // OK
+static String[] svgList = new String[]{"1.svg", "2.svg", "3.svg", "4.svg"};
+
 class Boid {
-  
   PVector target = null;
 
-  PVector position;
-  PVector velocity;
-  PVector acceleration;
-  float r;
-  float maxforce;    // Maximum steering force
-  float maxspeed;    // Maximum speed
+  PVector position, velocity, acceleration;
+  float r, maxforce, maxspeed;
 
-    Boid(float x, float y) {
+  PShape currentShape;            // Nom du SVG actuel
+
+  Boid(float x, float y) {
+
+    // Création de la list de Shape.
+    if (svgCache == null) {
+      svgCache = new HashMap<String, PShape>();
+      for (String name : svgList) {
+        svgCache.put(name, loadShape(name));
+      }
+    }
+
+    shapeMode(CENTER);
+    // Initialisation lazy de la map (une seule fois)
+    if (svgCache == null) {
+      svgCache = new HashMap<String, PShape>();
+      for (String name : svgList) {
+        svgCache.put(name, loadShape(name));
+      }
+    }
+    // Choix aléatoire du SVG pour ce boid
+    currentShape = svgCache.get(svgList[(int)random(svgList.length)]);
+
     acceleration = new PVector(0, 0);
 
     // This is a new PVector method not yet implemented in JS
@@ -29,19 +49,19 @@ class Boid {
 
   void run(ArrayList<Boid> boids) {
     flock(boids);
-    
-    
-  // si une target est définie, le boid se dirige vers elle
-  if (target != null) {
-    PVector steer = seek(target);
-    applyForce(steer);
 
-    // si le boid est proche de la cible, on loublie
-    if (PVector.dist(position, target) < 20) {
-      target = null;
+
+    // si une target est définie, le boid se dirige vers elle
+    if (target != null) {
+      PVector steer = seek(target);
+      applyForce(steer);
+
+      // si le boid est proche de la cible, on loublie
+      if (PVector.dist(position, target) < 20) {
+        target = null;
+      }
     }
-  }
-  
+
     update();
     borders();
     render();
@@ -100,17 +120,23 @@ class Boid {
     // Draw a triangle rotated in the direction of velocity
     float theta = velocity.heading2D() + radians(90);
     // heading2D() above is now heading() but leaving old syntax until Processing.js catches up
-    
+
     fill(200, 100);
     stroke(255);
     pushMatrix();
     translate(position.x, position.y);
     rotate(theta);
-    beginShape(TRIANGLES);
-    vertex(0, -r*2);
-    vertex(-r, r*2);
-    vertex(r, r*2);
-    endShape();
+    /* beginShape(TRIANGLES);
+     vertex(0, -r*2);
+     vertex(-r, r*2);
+     vertex(r, r*2);
+     endShape();*/
+
+    // Charger et afficher le SVG aléatoire
+
+    shapeMode(CENTER);
+    shape(currentShape, 0, 0, r*10, r*10);
+
     popMatrix();
   }
 
@@ -186,20 +212,19 @@ class Boid {
       PVector steer = PVector.sub(sum, velocity);
       steer.limit(maxforce);
       return steer;
-    } 
-    else {
+    } else {
       return new PVector(0, 0);
     }
   }
 
-void moveTowards(PVector target) {
+  void moveTowards(PVector target) {
     this.target = target.copy(); // on enregistre la cible
-}
+  }
 
   // Cohesion
   // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
   PVector cohesion (ArrayList<Boid> boids) {
-    float neighbordist = 50;
+    float neighbordist =5;
     PVector sum = new PVector(0, 0);   // Start with empty vector to accumulate all positions
     int count = 0;
     for (Boid other : boids) {
@@ -212,8 +237,7 @@ void moveTowards(PVector target) {
     if (count > 0) {
       sum.div(count);
       return seek(sum);  // Steer towards the position
-    } 
-    else {
+    } else {
       return new PVector(0, 0);
     }
   }

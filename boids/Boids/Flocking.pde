@@ -12,10 +12,11 @@
 Flock flock;
 
 void setup() {
-  size(640, 640);
+  smooth(8);
+  size(640, 640, P2D);
   flock = new Flock();
   // Add an initial set of boids into the system
-  for (int i = 0; i < 150; i++) {
+  for (int i = 0; i < 100; i++) {
     flock.addBoid(new Boid(width/2,height/2));
   }
 }
