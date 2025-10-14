@@ -1,13 +1,13 @@
 // The Boid class
 
 static HashMap<String, PShape> svgCache = null;  // OK
-static String[] svgList = new String[]{"1.svg", "2.svg", "3.svg", "4.svg"};
+static String[] svgList = new String[]{"hostile.svg", "friend.svg", "carre.svg", "unknown.svg"};
 
 class Boid {
   PVector target = null;
 
   PVector position, velocity, acceleration;
-  float r, maxforce, maxspeed;
+  float size, maxforce, maxspeed;
 
   PShape currentShape;            // Nom du SVG actuel
 
@@ -42,7 +42,7 @@ class Boid {
     velocity = new PVector(cos(angle), sin(angle));
 
     position = new PVector(x, y);
-    r = 2.0;
+    size = 0.1;
     maxspeed = 2;
     maxforce = 0.03;
   }
@@ -121,7 +121,7 @@ class Boid {
     float theta = velocity.heading2D() + radians(90);
     // heading2D() above is now heading() but leaving old syntax until Processing.js catches up
 
-    fill(200, 100);
+    //fill(200, 100);
     stroke(255);
     pushMatrix();
     translate(position.x, position.y);
@@ -135,17 +135,18 @@ class Boid {
     // Charger et afficher le SVG aléatoire
 
     shapeMode(CENTER);
-    shape(currentShape, 0, 0, r*10, r*10);
+    scale(size);
+    shape(currentShape, 0, 0);
 
     popMatrix();
   }
 
   // Wraparound
   void borders() {
-    if (position.x < -r) position.x = width+r;
-    if (position.y < -r) position.y = height+r;
-    if (position.x > width+r) position.x = -r;
-    if (position.y > height+r) position.y = -r;
+    if (position.x < -size) position.x = width+size;
+    if (position.y < -size) position.y = height+size;
+    if (position.x > width+size) position.x = -size;
+    if (position.y > height+size) position.y = -size;
   }
 
   // Separation
