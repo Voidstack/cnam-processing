@@ -11,11 +11,13 @@
 
 Flock flock;
 
-
 static HashMap<String, PShape> svgCacheFlocking = null;  // OK
-static String[] svgListFlocking = new String[]{"arte.svg"};
+static String[] svgListFlocking = new String[]{"arte.svg",
+  "target.svg"};
 
 void setup() {
+  surface.setResizable(true); // autorise le redimensionnement
+
   // Création de la list de Shape.
   if (svgCacheFlocking == null) {
     svgCacheFlocking = new HashMap<String, PShape>();
@@ -36,16 +38,29 @@ void setup() {
 
 void draw() {
   background(50);
-  
-    // L'app6 dans son état naturel
-   pushMatrix();
-    translate(width-65, 25);
-    // Charger et afficher le SVG aléatoire
-    scale(.5);
-    shape(svgCacheFlocking.get("arte.svg"), 0, 0);
-    popMatrix();
 
   flock.run();
+
+  createArte();
+//  createTarget();
+}
+
+void createArte() {
+  // L'app6 dans son état naturel
+  pushMatrix();
+  translate(width-65, 25);
+  // Charger et afficher le SVG aléatoire
+  scale(.5);
+  shape(svgCacheFlocking.get("arte.svg"), 0, 0);
+  popMatrix();
+}
+
+void createTarget(){
+  pushMatrix();
+  translate(mouseX, mouseY);
+  scale(.5);
+  shape(svgCacheFlocking.get("target.svg"), 0, 0);
+  popMatrix();
 }
 
 // Add a new boid into the System

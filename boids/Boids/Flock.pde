@@ -16,11 +16,10 @@ class Flock {
   void addBoid(Boid b) {
     boids.add(b);
   }
-  
-  void moveTowards(int x, int y){
-    for(Boid b : boids){
+
+  void moveTowards(int x, int y) {
+    for (Boid b : boids) {
       b.moveTowards(new PVector(x, y));
     }
   }
-
 }

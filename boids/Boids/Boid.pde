@@ -125,7 +125,7 @@ class Boid {
     stroke(255);
     pushMatrix();
     translate(position.x, position.y);
-    rotate(theta);
+    //rotate(theta);
     /* beginShape(TRIANGLES);
      vertex(0, -r*2);
      vertex(-r, r*2);
