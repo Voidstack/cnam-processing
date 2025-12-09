@@ -1,6 +1,8 @@
 import controlP5.*;
 
 class HUD {
+  private ScrollableList fishTypeList;
+  
   private HashMap<String, PImage> imgCache;
   private String[] imgList = {
     "hud/bin.png",
@@ -9,9 +11,6 @@ class HUD {
   private Flocking context;
   private ControlP5 cp5;
 
-  // Etat partagé (exposé pour le sketch)
-  int selectedSpecies = 0;
-
   HUD(Flocking ctx) {
     this.context = ctx;
 
@@ -19,7 +18,7 @@ class HUD {
 
     PFont p = createFont("Verdana", 12);
     cp5 = new ControlP5(ctx, p);
-    cp5.setAutoDraw(false);
+    cp5.setAutoDraw(false); // Pourquoi ? parce que sinon l'ui est rendu devant mon cursor custom.
 
     setupUI();
   }
@@ -31,7 +30,6 @@ class HUD {
     }
   }
 
-
   private void setupUI() {
     int hudY = 8;
     int hudH = 48;
@@ -39,18 +37,30 @@ class HUD {
     cp5.addButton("addFish")
       .setLabel("+ Poisson")
       .setPosition(10, hudY)
-      .setSize(100, hudH-8);
+      .onClick(e-> {
+      context.controler.setControler(EControlerType.ADD);
+    }
+    )
+    .setSize(100, hudH-8);
 
     cp5.addButton("removeFish")
       .setImage(imgCache.get("hud/bin.png"))
       .setLabel("- Poisson")
       .setPosition(120, hudY)
-      .setSize(100, hudH-8);
+      .onClick(e-> {
+      context.controler.setControler(EControlerType.TRASH);
+    }
+    )
+    .setSize(100, hudH-8);
 
     cp5.addButton("feed")
       .setLabel("Nourrir")
       .setPosition(230, hudY)
-      .setSize(90, hudH-8);
+      .onClick(e-> {
+      context.controler.setControler(EControlerType.FEED);
+    }
+    )
+    .setSize(90, hudH-8);
 
     cp5.addToggle("togglePause")
       .setLabel("Pause")
@@ -64,31 +74,31 @@ class HUD {
     );
     ;
 
-    ScrollableList dd = cp5.addScrollableList("species")
+    fishTypeList = cp5.addScrollableList("species")
       .setPosition(410, hudY)
       .setSize(140, (hudH-8)*7)
       .setBarHeight(hudH-8)
       .setItemHeight(hudH-8)
       .setLabel("Espèce");
 
-    /*    for(var test: Boid.svgCache){
-     dd.add(test.key());
-     }*/
-
-    dd.addItem("1$  Guppy", 0);
-    dd.addItem("3$  Néon rouge", 1);
-    dd.addItem("5$  Platy", 2);
-    dd.addItem("10$ Molly", 3);
-    dd.addItem("20$ Gouramin nain", 4);
-    dd.addItem("30$ Betta", 5);
-    dd.addItem("40$ oisson ange", 6);
-    dd.addItem("50$ Discus", 7);
-    dd.setValue(0);
+    // Ici je triche un peu, j'utilise l'index de l'enum pour pouvoir retrouver le fishType selected plus tard.
+    for (EFishType fishType : EFishType.values()) {
+      // On pourrais faire mieux avec un string format
+      String text = fishType.price + "$ " + fishType.name();
+      fishTypeList.addItem(text, fishType.ordinal());
+    }
+    fishTypeList.setValue(0);
 
     cp5.addTextlabel("fishCount")
       .setText("Poissons : 0")
       .setPosition(550, hudY + 10);
   }
+  
+  public EFishType getSelectedFishType() {
+    int index = (int) fishTypeList.getValue(); // récupère l'index de l'item sélectionné
+    return EFishType.values()[index];
+  }
+
 
   // --- dessin du fond du HUD ---
   void draw() {
@@ -107,21 +117,5 @@ class HUD {
   void setFishCount(int n) {
     cp5.get(Textlabel.class, "fishCount")
       .setText("Poissons : " + n);
-  }
-
-  // --- Callbacks ControlP5 ---
-  public void addFish() {
-  }
-  public void removeFish() {
-  }
-  public void feed() {
-  }
-
-  public void species(float v) {
-    selectedSpecies = (int)v;
-  }
-
-  int getSelectedSpecies() {
-    return selectedSpecies;
   }
 }

@@ -1,15 +1,3 @@
-// The Boid class
-
-public static HashMap<String, PShape> svgCache = null;  // OK
-static String[] svgList = new String[]{"images/guppy.svg",
-  "images/neonrouge.svg",
-  "images/platy.svg",
-  "images/molly.svg",
-  "images/gouraminain.svg",
-  "images/betta.svg",
-  "images/poissonange.svg",
-  "images/discus.svg"};
-
 class Boid {
   PVector target = null;
 
@@ -17,28 +5,23 @@ class Boid {
   float size, maxforce, maxspeed;
   float rotation;
 
-  PShape currentShape;            // Nom du SVG actuel
+  private EFishType fishType;
 
+  Boid(float x, float y, EFishType type){
+    this(x, y);
+    this.fishType = type;
+  }
+  
   Boid(float x, float y) {
 
-    // Création de la list de Shape.
-    if (svgCache == null) {
-      svgCache = new HashMap<String, PShape>();
-      for (String name : svgList) {
-        svgCache.put(name, loadShape(name));
-      }
-    }
+    initCache();
 
     shapeMode(CENTER);
-    // Initialisation lazy de la map (une seule fois)
-    if (svgCache == null) {
-      svgCache = new HashMap<String, PShape>();
-      for (String name : svgList) {
-        svgCache.put(name, loadShape(name));
-      }
-    }
+
     // Choix aléatoire du SVG pour ce boid
-    currentShape = svgCache.get(svgList[(int)random(svgList.length)]);
+    int randomInt = (int)random(EControlerType.values().length);
+    fishType = EFishType.values()[randomInt];
+//    fishType = EFishType.GUPPY;
 
     acceleration = new PVector(0, 0);
 
@@ -54,6 +37,9 @@ class Boid {
     size = 0.05;
     maxspeed = 2;
     maxforce = 0.03;
+  }
+
+  void initCache() {
   }
 
   void run(ArrayList<Boid> boids, boolean isPaused) {
@@ -125,29 +111,29 @@ class Boid {
   }
 
   void render() {
-    // Draw a triangle rotated in the direction of velocity
-    float theta = velocity.heading2D() + radians(90);
-    // heading2D() above is now heading() but leaving old syntax until Processing.js catches up
+    float theta = velocity.heading() + HALF_PI; // HALF_PI == radians(90)
 
-    //fill(200, 100);
-    stroke(255);
     pushMatrix();
     translate(position.x, position.y);
     rotate(theta);
-    /*    beginShape(TRIANGLES);
-     vertex(0, -rotation*2);
-     vertex(-rotation, rotation*2);
-     vertex(rotation, rotation*2);
-     endShape();*/
-
-    // Charger et afficher le SVG aléatoire
-
-    shapeMode(CENTER);
-    scale(size);
-    shape(currentShape, 0, 0);
-
+    scale(size); // le fishType pourrais connaitre sont scale
+    shape(fishType.shape, -fishType.shape.getHeight()/2, -fishType.shape.getWidth()/2);
     popMatrix();
-  }
+
+    // POUR LE DEBUG
+/*    pushMatrix();
+    translate(position.x, position.y);
+    rotate(theta);
+    noStroke();
+    fill(255, 150);
+    beginShape(TRIANGLES);
+    scale(5);
+    vertex(0, -rotation*2);
+    vertex(-rotation, rotation*2);
+    vertex(rotation, rotation*2);
+    endShape();
+    popMatrix();*/
+}
 
   // Wraparound
   void borders() {
