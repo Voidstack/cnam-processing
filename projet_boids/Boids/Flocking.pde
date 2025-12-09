@@ -1,5 +1,6 @@
 Flock flock;
 HUD hud;
+Controler controler;
 
 boolean pause;
 
@@ -16,10 +17,12 @@ void setup() {
   initFlock();
   initUI();
   
+  
   println("setup done");
 }
 
 void initUI(){
+  controler = new Controler(this);
   hud = new HUD(this);
 }
 
@@ -45,10 +48,11 @@ void draw() {
   background(50);
   flock.run(pause);
   hud.draw();
+  controler.draw(mouseX, mouseY);
 }
 
 // Add a new boid into the System
 void mousePressed() {
 //  flock.addBoid(new Boid(mouseX, mouseY));
-  flock.moveTowards(mouseX, mouseY);
+  controler.click(mouseX, mouseY);
 }

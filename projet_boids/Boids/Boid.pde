@@ -1,7 +1,14 @@
 // The Boid class
 
-static HashMap<String, PShape> svgCache = null;  // OK
-static String[] svgList = new String[]{"images/poisson_1.svg", "images/poisson_2.svg", "images/poisson_3.svg", "images/poisson_4.svg"};
+public static HashMap<String, PShape> svgCache = null;  // OK
+static String[] svgList = new String[]{"images/guppy.svg",
+  "images/neonrouge.svg",
+  "images/platy.svg",
+  "images/molly.svg",
+  "images/gouraminain.svg",
+  "images/betta.svg",
+  "images/poissonange.svg",
+  "images/discus.svg"};
 
 class Boid {
   PVector target = null;
@@ -63,7 +70,7 @@ class Boid {
       }
     }
 
-    if(!isPaused) update();
+    if (!isPaused) update();
     borders();
     render();
   }
@@ -127,11 +134,11 @@ class Boid {
     pushMatrix();
     translate(position.x, position.y);
     rotate(theta);
-/*    beginShape(TRIANGLES);
-    vertex(0, -rotation*2);
-    vertex(-rotation, rotation*2);
-    vertex(rotation, rotation*2);
-    endShape();*/
+    /*    beginShape(TRIANGLES);
+     vertex(0, -rotation*2);
+     vertex(-rotation, rotation*2);
+     vertex(rotation, rotation*2);
+     endShape();*/
 
     // Charger et afficher le SVG aléatoire
 
