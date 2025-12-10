@@ -7,11 +7,14 @@ class Boid {
 
   private EFishType fishType;
 
-  Boid(float x, float y, EFishType type){
+  int lastSpawnTime = 0;
+  int nextSpawnDelay = 0;
+
+  Boid(float x, float y, EFishType type) {
     this(x, y);
     this.fishType = type;
   }
-  
+
   Boid(float x, float y) {
 
     initCache();
@@ -21,7 +24,7 @@ class Boid {
     // Choix aléatoire du SVG pour ce boid
     int randomInt = (int)random(EControlerType.values().length);
     fishType = EFishType.values()[randomInt];
-//    fishType = EFishType.GUPPY;
+    //    fishType = EFishType.GUPPY;
 
     acceleration = new PVector(0, 0);
 
@@ -37,12 +40,34 @@ class Boid {
     size = 0.05;
     maxspeed = 2;
     maxforce = 0.03;
+
+    // init boids...
+    lastSpawnTime = millis();
+    nextSpawnDelay = (int)random(10000, 30000); // 10 à 30 sec
   }
 
   void initCache() {
   }
 
+  private void handleCurrency(boolean isPaused) {
+    if(isPaused)return;
+    // spawn currency
+    int currentTime = millis();
+    if (currentTime - lastSpawnTime >= nextSpawnDelay) {
+      spawnCurrency();
+      lastSpawnTime = currentTime;
+      nextSpawnDelay = (int)random(10000, 30000); // re-random pour le prochain spawn
+    }
+  }
+
+  private void spawnCurrency() {
+    Currency c = new Currency(position.x, position.y);
+    Flocking.instance.flock.addCurrency(c);
+  }
+
   void run(ArrayList<Boid> boids, boolean isPaused) {
+
+    handleCurrency(isPaused);
     flock(boids);
 
     // si une target est définie, le boid se dirige vers elle
@@ -121,19 +146,19 @@ class Boid {
     popMatrix();
 
     // POUR LE DEBUG
-/*    pushMatrix();
-    translate(position.x, position.y);
-    rotate(theta);
-    noStroke();
-    fill(255, 150);
-    beginShape(TRIANGLES);
-    scale(5);
-    vertex(0, -rotation*2);
-    vertex(-rotation, rotation*2);
-    vertex(rotation, rotation*2);
-    endShape();
-    popMatrix();*/
-}
+    /*    pushMatrix();
+     translate(position.x, position.y);
+     rotate(theta);
+     noStroke();
+     fill(255, 150);
+     beginShape(TRIANGLES);
+     scale(5);
+     vertex(0, -rotation*2);
+     vertex(-rotation, rotation*2);
+     vertex(rotation, rotation*2);
+     endShape();
+     popMatrix();*/
+  }
 
   // Wraparound
   void borders() {

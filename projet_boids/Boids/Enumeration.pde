@@ -25,15 +25,36 @@ public enum EFishType {
 }
 
 public enum EControlerType {
-  MOVE("cursor/cursor.png"),
-    FEED("cursor/feed.png"),
-    TRASH("cursor/trash.png"),
-    ADD("cursor/cursor.png");
+  MOVE("cursor/wave.png"),
+    FEED("cursor/food.png"),
+    TRASH("cursor/catcher.png"),
+    ADD("cursor/money.png");
 
   final String path;
   PImage image;
 
   EControlerType(String path) {
+    this.path = path;
+  }
+
+  void load(PApplet app) {
+    image = app.loadImage(path);
+  }
+}
+
+// ici je n'utilise pas vraiment la logique lié aux enum
+// mais j'apprépréce la simplicité d'utilisation des enum 
+// dans le cas présent
+public enum EHUDImg{
+  BIN("data/hud/bin.png"),
+  BG("data/hud/background.jpg"),
+  SUN("data/hud/sun.png"),
+  BIN_OVER("data/hud/bin_over.png");
+
+  final String path;
+  PImage image;
+
+  EHUDImg(String path) {
     this.path = path;
   }
 
