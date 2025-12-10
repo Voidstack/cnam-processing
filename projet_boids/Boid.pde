@@ -2,7 +2,7 @@ class Boid {
   PVector target = null;
 
   PVector position, velocity, acceleration;
-  float size, maxforce, maxspeed;
+  float myScale, maxforce, maxspeed;
   float rotation;
 
   private EFishType fishType;
@@ -13,13 +13,11 @@ class Boid {
   Boid(float x, float y, EFishType type) {
     this(x, y);
     this.fishType = type;
+    myScale = fishType.scale;
   }
 
   Boid(float x, float y) {
-
-    initCache();
-
-    shapeMode(CENTER);
+    shapeMode(CENTER); // useless
 
     // Choix aléatoire du SVG pour ce boid
     int randomInt = (int)random(EControlerType.values().length);
@@ -37,16 +35,13 @@ class Boid {
 
     position = new PVector(x, y);
     rotation = 2.0;
-    size = 0.05;
+    myScale = fishType.scale;
     maxspeed = 2;
     maxforce = 0.03;
 
     // init boids...
     lastSpawnTime = millis();
     nextSpawnDelay = (int)random(10000, 30000); // 10 à 30 sec
-  }
-
-  void initCache() {
   }
 
   private void handleCurrency(boolean isPaused) {
@@ -61,7 +56,7 @@ class Boid {
   }
 
   private void spawnCurrency() {
-    Currency c = new Currency(position.x, position.y);
+    Currency c = new Currency(position.x, position.y, fishType.production);
     Flocking.instance.flock.addCurrency(c);
   }
 
@@ -141,7 +136,7 @@ class Boid {
     pushMatrix();
     translate(position.x, position.y);
     rotate(theta);
-    scale(size); // le fishType pourrais connaitre sont scale
+    scale(myScale); // le fishType pourrais connaitre sont scale
     shape(fishType.shape, -fishType.shape.getHeight()/2, -fishType.shape.getWidth()/2);
     popMatrix();
 
@@ -162,10 +157,10 @@ class Boid {
 
   // Wraparound
   void borders() {
-    if (position.x < -size) position.x = width+size;
-    if (position.y < -size) position.y = height+size;
-    if (position.x > width+size) position.x = -size;
-    if (position.y > height+size) position.y = -size;
+    if (position.x < -myScale) position.x = width+myScale;
+    if (position.y < -myScale) position.y = height+myScale;
+    if (position.x > width+myScale) position.x = -myScale;
+    if (position.y > height+myScale) position.y = -myScale;
   }
 
   // Separation

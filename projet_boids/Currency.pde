@@ -9,6 +9,13 @@ class Currency extends PVector {
   private final float PADDING = 32; // marge en pixels
   
   private final int imgSize;
+  
+  public int value = 1;
+
+  Currency(float x, float y, int value){
+    this(x, y);
+    this.value = value;
+  }
 
   Currency(float x, float y) {
     // Clamp x et y pour rester dans la zone safe
@@ -26,9 +33,9 @@ class Currency extends PVector {
   }
 
   void run(boolean isPaused) {
+    render();
     if (isPaused) return;
     handlerTimer();
-    render();
   }
 
   void handlerTimer() {

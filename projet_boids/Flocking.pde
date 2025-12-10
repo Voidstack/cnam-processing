@@ -12,7 +12,8 @@ void setup() {
   smooth(8);
   size(640, 640, P2D);
   surface.setResizable(true);
-  surface.setLocation(100, 100);
+    surface.setTitle("RIP Windows Vista");
+//  surface.setLocation(100, 100);
 
   initEnum();
   initFlock();

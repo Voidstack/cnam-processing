@@ -68,7 +68,7 @@ class Flock {
     for(Currency item : currencys){
       if(item.timer < 0) toDel = item;
       if(mousePos.dist(item) < RANGE_DETECTION_CURRENCY){
-        context.money += 1; // EARN MONEY !
+        context.money += item.value; // EARN MONEY !
         toDel = item;
       }
     }
