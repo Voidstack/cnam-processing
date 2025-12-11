@@ -5,15 +5,15 @@ public HUD hud;
 public Controler controler;
 public boolean pause;
 
-public int money = 0;
+public int money = 50; // default
 
 void setup() {
-  this.instance =this;
+  Flocking.instance =this;
   smooth(8);
   size(640, 640, P2D);
   surface.setResizable(true);
-    surface.setTitle("RIP Windows Vista");
-//  surface.setLocation(100, 100);
+  surface.setTitle("RIP Windows Vista");
+  surface.setLocation(100, 100);
 
   initEnum();
   initFlock();
@@ -33,6 +33,10 @@ private void initEnum() {
 
   for (EHUDImg type : EHUDImg.values()) {
     type.load(this);
+  }
+  
+  for(ESoundEffect sf : ESoundEffect.values()){
+    sf.load(this);
   }
 }
 
@@ -77,7 +81,7 @@ void mousePressed() {
   controler.click(mouseX, mouseY);
 }
 
-void mouseDragged(){
+void mouseDragged() {
   if (height - mouseX < 48) return; // click sur le menu (à refaire)
   controler.drag(mouseX, mouseY);
 }

@@ -19,16 +19,16 @@ class Controler {
     context.image(img, coordX, coordY, CURSOR_SIZE, CURSOR_SIZE);
 
     if (currentControler==EControlerType.ADD) {
-      context.textSize(24);
-      context.fill(0);
-      context.text("-"+context.hud.getSelectedFishType().price+"$", coordX + CURSOR_SIZE - 25 +3, coordY + CURSOR_SIZE / 2 -25 +3);
+      int price = context.hud.getSelectedFishType().price;
 
       // shadow simpliste
       context.textSize(24);
-      context.fill(255);
-      context.text("-"+context.hud.getSelectedFishType().price+"$", coordX + CURSOR_SIZE - 25, coordY + CURSOR_SIZE / 2 -25);
-      
-      
+      context.fill(0);
+      context.text("-"+price+"$", coordX + CURSOR_SIZE - 25 +3, coordY + CURSOR_SIZE / 2 -25 +3);
+
+      context.textSize(24);
+      context.fill(context.money>= price?255:255, 0, 0);
+      context.text("-"+price+"$", coordX + CURSOR_SIZE - 25, coordY + CURSOR_SIZE / 2 -25);
 
       // Exemple : PShape à côté
       PShape s = context.hud.getSelectedFishType().shape;
@@ -45,17 +45,19 @@ class Controler {
     switch (currentControler) {
     case FEED:
       context.flock.moveTowards(coordX, coordY);
+      ESoundEffect.ALARM.sound.play();
       println("feed");
       break;
     case ADD:
       EFishType fish = context.hud.getSelectedFishType();
-      if(context.money < fish.price) return;
+      if (context.money < fish.price) return;
       context.money -= fish.price;
       context.flock.addBoid(new Boid(coordX, coordY, fish));
+      ESoundEffect.WATER_DROP.sound.play();
       println("add");
       break;
     case TRASH:
-      context.flock.removeBoid(coordX, coordY);
+      context.flock.tryRemoveBoid(coordX, coordY);
       println("trash");
       break;
     default:
@@ -66,7 +68,7 @@ class Controler {
   void drag(int coordX, int coordY) {
     switch (currentControler) {
     case TRASH:
-      context.flock.removeBoid(coordX, coordY);
+      context.flock.tryRemoveBoid(coordX, coordY);
       println("trash");
       break;
     default:

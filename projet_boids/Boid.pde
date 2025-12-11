@@ -34,12 +34,10 @@ class Boid {
     velocity = new PVector(cos(angle), sin(angle));
 
     position = new PVector(x, y);
-    rotation = 2.0;
     myScale = fishType.scale;
     maxspeed = 2;
     maxforce = 0.03;
 
-    // init boids...
     lastSpawnTime = millis();
     nextSpawnDelay = (int)random(10000, 30000); // 10 à 30 sec
   }

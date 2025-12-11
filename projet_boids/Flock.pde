@@ -46,7 +46,7 @@ class Flock {
    * Permet de del un boid proche des coord en param.
    * On del le premier boid retourné pour simplifier mais en vrai il faudrais faire le plus proche
    **/
-  void removeBoid(int x, int y) {
+  void tryRemoveBoid(int x, int y) {
     PVector mousePos = new PVector(x, y);
     Boid boidToDel = null;
     for (Boid b : boids) {
@@ -57,6 +57,7 @@ class Flock {
     if (boidToDel != null) {
       println("Suppression d'un boid");
       boids.remove(boidToDel);
+      ESoundEffect.GULP.sound.play();
     }
   }
   
@@ -69,6 +70,7 @@ class Flock {
       if(item.timer < 0) toDel = item;
       if(mousePos.dist(item) < RANGE_DETECTION_CURRENCY){
         context.money += item.value; // EARN MONEY !
+        ESoundEffect.CURRENCY.sound.play();
         toDel = item;
       }
     }
