@@ -1,11 +1,11 @@
 // Pour séparer la logique du controler
 class Controler {
-  private Flocking context;
+  private MainApp context;
   public EControlerType currentControler;
 
   private final int CURSOR_SIZE = 64;
 
-  Controler(Flocking context) {
+  Controler(MainApp context) {
     this.context = context;
     //    this.context.noCursor();
     this.currentControler = EControlerType.FEED;
@@ -27,7 +27,10 @@ class Controler {
       context.text("-"+price+"$", coordX + CURSOR_SIZE - 25 +3, coordY + CURSOR_SIZE / 2 -25 +3);
 
       context.textSize(24);
-      context.fill(context.money>= price?255:255, 0, 0);
+      
+      if(context.money>= price) context.fill(255);
+      else context.fill(255, 0, 0);
+
       context.text("-"+price+"$", coordX + CURSOR_SIZE - 25, coordY + CURSOR_SIZE / 2 -25);
 
       // Exemple : PShape à côté
@@ -52,7 +55,7 @@ class Controler {
       EFishType fish = context.hud.getSelectedFishType();
       if (context.money < fish.price) return;
       context.money -= fish.price;
-      context.flock.addBoid(new Boid(coordX, coordY, fish));
+      context.flock.addBoid(new Fish(coordX, coordY, fish));
       ESoundEffect.WATER_DROP.sound.play();
       println("add");
       break;

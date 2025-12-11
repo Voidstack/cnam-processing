@@ -1,6 +1,8 @@
-static public Flocking instance; // singleton (oui, c'est pas bien)
+// Singleton, c'est pas bien mais le context étant unique, c'est pas trop grave.
+// et puis c'est bien pratique
+static public MainApp instance;
 
-public Flock flock;
+public Aquarium flock;
 public HUD hud;
 public Controler controler;
 public boolean pause;
@@ -8,7 +10,7 @@ public boolean pause;
 public int money = 50; // default
 
 void setup() {
-  Flocking.instance =this;
+  MainApp.instance =this;
   smooth(8);
   size(640, 640, P2D);
   surface.setResizable(true);
@@ -22,6 +24,7 @@ void setup() {
   println("setup done");
 }
 
+/** Permet de charger les différents Asset, ils sont alors accessible partout depuis une simple Enum. **/
 private void initEnum() {
   for (EControlerType type : EControlerType.values()) {
     type.load(this);
@@ -46,10 +49,10 @@ private void initUI() {
 }
 
 private void initFlock() {
-  flock = new Flock(this);
+  flock = new Aquarium(this);
   // Add an initial set of boids into the system
   for (int i = 0; i < 10; i++) {
-    flock.addBoid(new Boid(width/2, height/2));
+    flock.addBoid(new Fish(width/2, height/2));
   }
 
   Currency currency = new Currency(width/2, height/2);
@@ -77,11 +80,11 @@ private void drawBg() {
 
 // Add a new boid into the System
 void mousePressed() {
-  if (height - mouseX < 48) return; // click sur le menu (à refaire)
+  if(hud.cp5.isMouseOver()) return;
   controler.click(mouseX, mouseY);
 }
 
 void mouseDragged() {
-  if (height - mouseX < 48) return; // click sur le menu (à refaire)
+  if(hud.cp5.isMouseOver()) return;
   controler.drag(mouseX, mouseY);
 }

@@ -3,17 +3,17 @@ import controlP5.*;
 class HUD {
   private ScrollableList fishTypeList;
 
-  private Flocking context;
+  private MainApp context;
   private ControlP5 cp5;
 
   private static final int FONT_SIZE = 16;
 
-  HUD(Flocking ctx) {
+  HUD(MainApp ctx) {
     this.context = ctx;
 
     PFont p = createFont("data/font/LuckiestGuy-Regular.ttf", FONT_SIZE);
     cp5 = new ControlP5(ctx, p);
-    cp5.setAutoDraw(false); // Pourquoi ? parce que sinon l'ui est rendu devant mon cursor custom.
+    cp5.setAutoDraw(false); // Pourquoi ? parce que sinon controlp5 est rendu devant mon cursor custom.
 
     setupUI();
   }

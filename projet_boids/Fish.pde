@@ -1,4 +1,4 @@
-class Boid {
+class Fish {
   PVector target = null;
 
   PVector position, velocity, acceleration;
@@ -10,13 +10,13 @@ class Boid {
   int lastSpawnTime = 0;
   int nextSpawnDelay = 0;
 
-  Boid(float x, float y, EFishType type) {
+  Fish(float x, float y, EFishType type) {
     this(x, y);
     this.fishType = type;
     myScale = fishType.scale;
   }
 
-  Boid(float x, float y) {
+  Fish(float x, float y) {
     shapeMode(CENTER); // useless
 
     // Choix aléatoire du SVG pour ce boid
@@ -55,10 +55,10 @@ class Boid {
 
   private void spawnCurrency() {
     Currency c = new Currency(position.x, position.y, fishType.production);
-    Flocking.instance.flock.addCurrency(c);
+    MainApp.instance.flock.addCurrency(c);
   }
 
-  void run(ArrayList<Boid> boids, boolean isPaused) {
+  void run(ArrayList<Fish> boids, boolean isPaused) {
 
     handleCurrency(isPaused);
     flock(boids);
@@ -85,7 +85,7 @@ class Boid {
   }
 
   // We accumulate a new acceleration each time based on three rules
-  void flock(ArrayList<Boid> boids) {
+  void flock(ArrayList<Fish> boids) {
     PVector sep = separate(boids);   // Separation
     PVector ali = align(boids);      // Alignment
     PVector coh = cohesion(boids);   // Cohesion
@@ -163,12 +163,12 @@ class Boid {
 
   // Separation
   // Method checks for nearby boids and steers away
-  PVector separate (ArrayList<Boid> boids) {
+  PVector separate (ArrayList<Fish> boids) {
     float desiredseparation = 25.0f;
     PVector steer = new PVector(0, 0, 0);
     int count = 0;
     // For every boid in the system, check if it's too close
-    for (Boid other : boids) {
+    for (Fish other : boids) {
       float d = PVector.dist(position, other.position);
       // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
       if ((d > 0) && (d < desiredseparation)) {
@@ -202,11 +202,11 @@ class Boid {
 
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
-  PVector align (ArrayList<Boid> boids) {
+  PVector align (ArrayList<Fish> boids) {
     float neighbordist = 50;
     PVector sum = new PVector(0, 0);
     int count = 0;
-    for (Boid other : boids) {
+    for (Fish other : boids) {
       float d = PVector.dist(position, other.position);
       if ((d > 0) && (d < neighbordist)) {
         sum.add(other.velocity);
@@ -236,11 +236,11 @@ class Boid {
 
   // Cohesion
   // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
-  PVector cohesion (ArrayList<Boid> boids) {
+  PVector cohesion (ArrayList<Fish> boids) {
     float neighbordist =5;
     PVector sum = new PVector(0, 0);   // Start with empty vector to accumulate all positions
     int count = 0;
-    for (Boid other : boids) {
+    for (Fish other : boids) {
       float d = PVector.dist(position, other.position);
       if ((d > 0) && (d < neighbordist)) {
         sum.add(other.position); // Add position

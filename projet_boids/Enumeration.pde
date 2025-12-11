@@ -1,5 +1,8 @@
 import processing.sound.*;
 
+// ici je n'utilise pas vraiment la logique lié aux enum
+// mais j'apprépréce la simplicité d'utilisation des enum 
+// dans le cas présent, même chose pour EHUDImg
 public enum ESoundEffect{
   CURRENCY("data/sound/currency.mp3"),
   GULP("data/sound/gulp.mp3"),
@@ -65,9 +68,6 @@ public enum EControlerType {
   }
 }
 
-// ici je n'utilise pas vraiment la logique lié aux enum
-// mais j'apprépréce la simplicité d'utilisation des enum 
-// dans le cas présent
 public enum EHUDImg{
   BG("data/hud/background.jpg"),
   SUN("data/hud/sun.png");

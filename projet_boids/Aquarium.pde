@@ -1,22 +1,22 @@
 // The Flock (a list of Boid objects)
   
-class Flock {
+class Aquarium {
   private static final int MAX_BOIDS = 50;
   private static final int MAX_CURRENCY = 50;
   private static final int RANGE_DETECTION_BOID = 35;
   private static final int RANGE_DETECTION_CURRENCY = 20;
   
-  private final ArrayList<Boid> boids = new ArrayList<>(); // An ArrayList for all the boids
+  private final ArrayList<Fish> boids = new ArrayList<>(); // An ArrayList for all the boids
   private final ArrayList<Currency> currencys = new ArrayList<>();
 
-  private Flocking context;
+  private MainApp context;
 
-  Flock(Flocking context) {
+  Aquarium(MainApp context) {
     this.context = context;
   }
 
   void runBoid(boolean isPaused) {
-    for (Boid b : boids) {
+    for (Fish b : boids) {
       b.run(boids, isPaused);  // Passing the entire list of boids to each boid individually
     }
   }
@@ -28,7 +28,7 @@ class Flock {
     this.removeCurrency(new PVector(x, y));
   }
 
-  void addBoid(Boid b) {
+  void addBoid(Fish b) {
     if (boids.size() < MAX_BOIDS)
       boids.add(b);
     else
@@ -48,8 +48,8 @@ class Flock {
    **/
   void tryRemoveBoid(int x, int y) {
     PVector mousePos = new PVector(x, y);
-    Boid boidToDel = null;
-    for (Boid b : boids) {
+    Fish boidToDel = null;
+    for (Fish b : boids) {
       if (mousePos.dist(b.position) < RANGE_DETECTION_BOID) {
         boidToDel = b;
       }
@@ -81,7 +81,7 @@ class Flock {
   }
 
   void moveTowards(int x, int y) {
-    for (Boid b : boids) {
+    for (Fish b : boids) {
       b.moveTowards(new PVector(x, y));
     }
   }

@@ -4,7 +4,7 @@ class Currency extends PVector {
   public int timer = 15000; // 15 secondes en millisecondes
   private int lastTime;
   float rotation;
-  private Flocking main = Flocking.instance;
+  private MainApp main = MainApp.instance;
 
   private final float PADDING = 32; // marge en pixels
   
