@@ -61,7 +61,7 @@ private void initFlock() {
 
 void draw() {
   background(50);
-  drawBg();
+//  drawBg();
 
   flock.runBoid(pause);
   flock.runCurrency(pause, mouseX, mouseY);

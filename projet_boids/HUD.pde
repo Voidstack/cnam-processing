@@ -29,11 +29,7 @@ class HUD {
     cp5.addTextlabel("moneyCount")
       .setText("Money : 0$")
       .setPosition(hudY, hudY+FONT_SIZE);
-
-    cp5.addTextlabel("idkCount")
-      .setText("idk")
-      .setPosition(hudY, hudY+FONT_SIZE+FONT_SIZE);
-
+      
     final Button removeBtn = cp5.addButton("removeFish")
       // .setImage(EHUDImg.BIN.image)
       .setLabel("TRASH")
