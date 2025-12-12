@@ -14,7 +14,7 @@ void setup() {
   smooth(8);
   size(640, 640, P2D);
   surface.setResizable(true);
-  surface.setTitle("RIP Windows Vista");
+  surface.setTitle("les ti poissons");
   surface.setLocation(100, 100);
 
   initEnum();
