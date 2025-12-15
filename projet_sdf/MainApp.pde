@@ -1,8 +1,8 @@
 // https://iquilezles.org/articles/distfunctions2d/
 
-public static MainApp instance;
+public static MainApp instance; // pas bien, mais pas grave dans le context actuel
 
-public float lissage = 0.05;
+public float lissage = 0.05; // idéalement des get/set
 private HUD hud;
 private Tableau tableau;
 
@@ -20,11 +20,13 @@ void draw(){
   hud.draw();
 }
 
+// Control pour le lissage
 void mouseWheel(processing.event.MouseEvent e) {
   lissage += e.getCount() * 0.01;
   lissage = constrain(lissage, 0.01, 0.3);
 }
 
+// garde la shape selected en mémoire
 SDFShape selectedShape = null;
 
 void mousePressed() {

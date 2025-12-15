@@ -75,8 +75,9 @@ class HUD {
     //    li.setValue(0);
 
     cp5.addTextlabel("info")
-      .setText("""Click droit sur une forme pour la supprimer""")
-      .setPosition(10, height - 30)
+      .setText("""Click droit sur une forme pour la supprimer
+Scroll molette pour modifier le lissage""")
+      .setPosition(8, height - 16*2-8)
       .setColorValue(color(255));
 
 
@@ -86,7 +87,7 @@ class HUD {
       .setColorValue(color(255));
   }
 
-  // --- dessin du fond du HUD ---
+  // dessin du fond du HUD
   void draw() {
     context.noStroke();
     context.fill(40, 40, 100, 200);

@@ -60,7 +60,7 @@ private void initFlock() {
 }
 
 void draw() {
-  background(50);
+  background(10, 125, 245);
 //  drawBg();
 
   flock.runBoid(pause);
